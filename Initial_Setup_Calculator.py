@@ -11,6 +11,8 @@ import numpy as np
 import scipy as sc
 import scipy.constants as sp
 import astropy.constants as ap
+import astropy.units as au
+from astropy.units import imperial
 import math
 
 """ Time Units"""
@@ -19,13 +21,25 @@ G = ap.G.to('cm3 / (g s2)')
 
 M_sol = ap.M_sun.to('g')
 
-dist_cu = 1e17  # ('cm')
+dist_cu = 1e17*au.cm
+
+print("Distance unit : ", dist_cu)
 
 a = G*M_sol
 
-tu = np.sqrt((dist_cu**3)/a)
+time_cu = np.sqrt((dist_cu**3)/a)
 
-print tu
+print("Time unit : ", time_cu)
+
+v_u = dist_cu / time_cu
+
+vkms = 1e5*au.cm/au.km
+
+vel_cu = v_u/vkms
+
+print("Velocity unit : ", vel_cu)
+
+
 
 def CloudRadius(n, m_cloud):
 
@@ -37,22 +51,20 @@ def CloudRadius(n, m_cloud):
 
     r = ((3*m_cloud_sol)/(4*np.pi*1.4*m_p*n))**(1/3)
 
-    distance_unit = 1e17  #cm
+    distance_unit = 1e17  # cm
 
     radius = r/distance_unit
 
     return radius
 
 
-def CloudVel(V, tu, dist_cu):
+def CloudVel(V, time_cu, dist_cu):
 
-    Vu = dist_cu/tu
+    Vu = dist_cu/time_cu
 
-    Vel = (V*1e5)/Vu
+    Vel = (V*1e5)/Vu*(au.cm/au.s)
 
     return Vel
-
-
 
 
 while True:
@@ -93,7 +105,7 @@ while True:
 
         Vint = np.float64(V)
 
-        Vel = CloudVel(Vint, tu, dist_cu)
+        Vel = CloudVel(Vint, time_cu, dist_cu)
 
         print Vel
 
