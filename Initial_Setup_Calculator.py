@@ -15,7 +15,7 @@ import astropy.units as au
 from astropy.units import imperial
 import math
 
-""" Time Units"""
+""" Units"""
 
 G = ap.G.to('cm3 / (g s2)')
 
@@ -39,6 +39,8 @@ vel_cu = v_u/vkms
 
 print("Velocity unit : ", vel_cu)
 
+
+""" Calculator """
 
 
 def CloudRadius(n, m_cloud):
@@ -108,6 +110,86 @@ while True:
         Vel = CloudVel(Vint, time_cu, dist_cu)
 
         print Vel
+
+        decision = raw_input("New calculation (y/n)?: ")
+
+        if decision == 'y' or decision == 'yes':
+
+            continue
+
+        else:
+
+            break
+
+    if parameter == 'crossing-time-ext':
+
+        V = raw_input("What is the velocity (Code_Units), v?: ")
+
+        Vint = np.float64(V)
+
+        L = raw_input("What is the radius of the cloud (Code_Units), r?: ")
+
+        Lint = np.float64(L)
+
+        t = raw_input("What is the seperation in terms of cloud radii (Code_Units), t?: ")
+
+        tint = np.float64(t)
+
+        T_Cross = (tint*Lint)/Vint
+
+        print T_Cross
+
+        decision = raw_input("New calculation (y/n)?: ")
+
+        if decision == 'y' or decision == 'yes':
+
+            continue
+
+        else:
+
+            break
+
+    if parameter == 'crossing-time-int':
+
+        V_disp = raw_input("What is the velocity dispersion (Code_Units), v?: ")
+
+        Vint_disp = np.float64(V_disp)
+
+        R = raw_input("What is the radius of the cloud (Code_Units), r?: ")
+
+        Rint = np.float64(R)
+
+        T_Cross = Rint/Vint_disp
+
+        print T_Cross
+
+        decision = raw_input("New calculation (y/n)?: ")
+
+        if decision == 'y' or decision == 'yes':
+
+            continue
+
+        else:
+
+            break
+
+    if parameter == 'optimal-distance':
+
+        V = raw_input("What is the velocity (Code_Units), v?: ")
+
+        Vint = np.float64(V)
+
+        V_disp = raw_input("What is the velocity dispersion (Code_Units), v?: ")
+
+        Vint_disp = np.float64(V_disp)
+
+        R = raw_input("What is the radius of the cloud (Code_Units), r?: ")
+
+        Rint = np.float64(R)
+
+        L = Vint*(Rint/Vint_disp)
+
+        print L
 
         decision = raw_input("New calculation (y/n)?: ")
 

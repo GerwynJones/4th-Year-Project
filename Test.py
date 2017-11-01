@@ -29,3 +29,4 @@ print tu
 
 
 
+print 4*59.5996
