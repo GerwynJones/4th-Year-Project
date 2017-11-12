@@ -97,7 +97,7 @@ while True:
 
         decision = raw_input("New calculation (y/n)?: ")
 
-        if decision=='y' or decision=='yes':
+        if decision == 'y' or decision == 'yes':
 
             continue
 
@@ -125,17 +125,26 @@ while True:
 
             break
 
-    print "I'm here"
-
     if parameter == 'crossing-time-ext':
 
-        V = raw_input("What is the velocity (Code_Units), v?: ")
+        try:
+            Vel = Vint
 
-        Vint = np.float64(V)
+        except NameError:
 
-        L = raw_input("What is the radius of the cloud (Code_Units), r?: ")
+            V = raw_input("What is the velocity (Code_Units), v?: ")
 
-        Lint = np.float64(L)
+            Vint = np.float64(V)
+
+        try:
+
+            Lint = CR
+
+        except NameError:
+
+            L = raw_input("What is the radius of the cloud (Code_Units), r?: ")
+
+            Lint = np.float64(L)
 
         t = raw_input("What is the seperation in terms of cloud radii (Code_Units), t?: ")
 
@@ -155,18 +164,23 @@ while True:
 
             break
 
-
     if parameter == 'crossing-time-int':
 
         V_disp = raw_input("What is the velocity dispersion (Code_Units), v?: ")
 
         Vint_disp = np.float64(V_disp)
 
-        R = raw_input("What is the radius of the cloud (Code_Units), r?: ")
+        try:
 
-        Rint = np.float64(R)
+            Rint = CR
 
-        T_Cross = Rint/Vint_disp
+        except NameError:
+
+            R = raw_input("What is the radius of the cloud (Code_Units), r?: ")
+
+            Rint = np.float64(R)
+
+        T_Cross = Rint / Vint_disp
 
         print T_Cross
 
@@ -182,19 +196,35 @@ while True:
 
     if parameter == 'optimal-distance':
 
-        V = raw_input("What is the velocity (Code_Units), v?: ")
+        try:
+            Vel = Vint
 
-        Vint = np.float64(V)
+        except NameError:
 
-        V_disp = raw_input("What is the velocity dispersion (Code_Units), v?: ")
+            V = raw_input("What is the velocity (Code_Units), v?: ")
 
-        Vint_disp = np.float64(V_disp)
+            Vint = np.float64(V)
 
-        R = raw_input("What is the radius of the cloud (Code_Units), r?: ")
+        try:
+            Vint_disp
 
-        Rint = np.float64(R)
+        except NameError:
 
-        L = Vint*(Rint/Vint_disp)
+            V_disp = raw_input("What is the velocity dispersion (Code_Units), v?: ")
+
+            Vint_disp = np.float64(V_disp)
+
+        try:
+
+            Rint = CR
+
+        except NameError:
+
+            R = raw_input("What is the radius of the cloud (Code_Units), r?: ")
+
+            Rint = np.float64(R)
+
+        L = Vint*(Rint / Vint_disp)
 
         print L
 
@@ -210,17 +240,24 @@ while True:
 
     if parameter == 'boxsize':
 
-        R = raw_input("What is the radius of the cloud (Code_Units), r?: ")
+        try:
 
-        Rint = np.float64(R)
+            Rint = CR
 
-        # if Opt_dist == 0:
-        #
-        #     print "Found opt dist"
+        except NameError:
 
-        D = raw_input("What is the optimal distance between the two clouds (Code_Units), d?: ")
+            R = raw_input("What is the radius of the cloud (Code_Units), r?: ")
 
-        Dint = np.float64(D)
+            Rint = np.float64(R)
+
+        try:
+            Dint = L
+
+        except NameError:
+
+            D = raw_input("What is the optimal distance between the two clouds (Code_Units), d?: ")
+
+            Dint = np.float64(D)
 
         boxsize = 4*Rint + Dint
 
@@ -238,11 +275,11 @@ while True:
 
             break
 
-    if parameter == 'no.density':
+    if parameter == 'No.density':
 
         nd = raw_input("What is the number density (Code_Units), n?: ")
 
-        N_int = np.float64(nd)*(au.cm)**-3
+        N_int = np.float64(nd)*(au.cm**-3)
 
         D_int = N_int*(ap.m_p.to('g'))/rho_cu
 
@@ -257,6 +294,3 @@ while True:
         else:
 
             break
-
-
-    print "I'm there"
