@@ -31,13 +31,17 @@ time_cu = np.sqrt((dist_cu**3)/a)
 
 print("Time unit : ", time_cu)
 
-v_u = dist_cu / time_cu
+v_cu = dist_cu / time_cu
 
 vkms = 1e5*au.cm/au.km
 
-vel_cu = v_u/vkms
+vel_cu = v_cu/vkms
 
 print("Velocity unit : ", vel_cu)
+
+rho_cu = M_sol/dist_cu**3
+
+print("Density unit : ", rho_cu)
 
 
 """ Calculator """
@@ -115,11 +119,13 @@ while True:
 
         if decision == 'y' or decision == 'yes':
 
-            continue
+            t = 0
 
         else:
 
             break
+
+    print "I'm here"
 
     if parameter == 'crossing-time-ext':
 
@@ -148,6 +154,7 @@ while True:
         else:
 
             break
+
 
     if parameter == 'crossing-time-int':
 
@@ -201,3 +208,55 @@ while True:
 
             break
 
+    if parameter == 'boxsize':
+
+        R = raw_input("What is the radius of the cloud (Code_Units), r?: ")
+
+        Rint = np.float64(R)
+
+        # if Opt_dist == 0:
+        #
+        #     print "Found opt dist"
+
+        D = raw_input("What is the optimal distance between the two clouds (Code_Units), d?: ")
+
+        Dint = np.float64(D)
+
+        boxsize = 4*Rint + Dint
+
+        print "Boxsize =", boxsize
+
+        print "Y,Z =", boxsize/2
+
+        decision = raw_input("New calculation (y/n)?: ")
+
+        if decision == 'y' or decision == 'yes':
+
+            continue
+
+        else:
+
+            break
+
+    if parameter == 'no.density':
+
+        nd = raw_input("What is the number density (Code_Units), n?: ")
+
+        N_int = np.float64(nd)*(au.cm)**-3
+
+        D_int = N_int*(ap.m_p.to('g'))/rho_cu
+
+        print D_int
+
+        decision = raw_input("New calculation (y/n)?: ")
+
+        if decision == 'y' or decision == 'yes':
+
+            continue
+
+        else:
+
+            break
+
+
+    print "I'm there"
