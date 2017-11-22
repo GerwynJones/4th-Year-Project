@@ -7,24 +7,62 @@ Created on Wed Oct 04 10:57:34 2017
 
 from __future__ import division
 
+import os
+import fnmatch
 import numpy as np
 import scipy as sc
 import scipy.constants as sp
 import astropy.constants as ap
+import astropy.units as au
 import math
+
+
+""" Units"""
+
 
 G = ap.G.to('cm3 / (g s2)')
 
-M_sol = ap.M_sun.to('g')
+M_cu = 1.991e33 * au.g
 
-m_p = ap.m_p
+print "Mass unit : ", M_cu
 
-dist_cu = 1e17  # ('cm')
+dist_cu = 9.9999998e16 * au.cm
 
-a = G*M_sol
+print "Distance unit : ", dist_cu
 
-tu = np.sqrt((dist_cu**3)/a)
+time_cu = 2.7436898e12 * au.s
 
-print tu
+print "Time unit : ", time_cu
 
-print (60*60)
+v_cu = dist_cu / time_cu
+
+vkms = 1e5*au.cm/au.km
+
+vel_cu = v_cu/vkms
+
+print "Velocity unit : ", vel_cu
+
+rho_cu = M_cu/dist_cu**3
+
+print "Density unit : ", rho_cu
+
+
+K_E = 87288.56
+
+m = 1e4*(ap.M_sun.to('g')/M_cu)
+
+V = np.sqrt(2*K_E)/m
+
+print V
+
+print '\nAvailable files:\n'
+
+
+for file in os.listdir('.'):
+
+    if fnmatch.fnmatch(file, '.py'):
+
+        print(file)
+
+
+print au.megayear

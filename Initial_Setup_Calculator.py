@@ -12,24 +12,25 @@ import scipy as sc
 import scipy.constants as sp
 import astropy.constants as ap
 import astropy.units as au
-from astropy.units import imperial
 import math
+
 
 """ Units"""
 
+
 G = ap.G.to('cm3 / (g s2)')
 
-M_sol = ap.M_sun.to('g')
+M_cu = 1.991e33 * au.g
 
-dist_cu = 1e17*au.cm
+print "Mass unit : ", M_cu
 
-print("Distance unit : ", dist_cu)
+dist_cu = 9.9999998e16 * au.cm
 
-a = G*M_sol
+print "Distance unit : ", dist_cu
 
-time_cu = np.sqrt((dist_cu**3)/a)
+time_cu = 2.7436898e12 * au.s
 
-print("Time unit : ", time_cu)
+print "Time unit : ", time_cu
 
 v_cu = dist_cu / time_cu
 
@@ -37,12 +38,11 @@ vkms = 1e5*au.cm/au.km
 
 vel_cu = v_cu/vkms
 
-print("Velocity unit : ", vel_cu)
+print "Velocity unit : ", vel_cu
 
-rho_cu = M_sol/dist_cu**3
+rho_cu = M_cu/dist_cu**3
 
-print("Density unit : ", rho_cu)
-
+print "Density unit : ", rho_cu
 
 """ Calculator """
 
@@ -64,15 +64,6 @@ def CloudRadius(n, m_cloud):
     return radius
 
 
-def CloudVel(V, time_cu, dist_cu):
-
-    Vu = dist_cu/time_cu
-
-    Vel = (V*1e5)/Vu*(au.cm/au.s)
-
-    return Vel
-
-
 while True:
 
     parameter = raw_input("What to calculate or 0 to exit: ")
@@ -91,9 +82,9 @@ while True:
 
         m_cint = np.float64(m_c)
 
-        CR = CloudRadius(n_int, m_cint)
+        Rint = CloudRadius(n_int, m_cint)
 
-        print CR
+        print Rint
 
         decision = raw_input("New calculation (y/n)?: ")
 
@@ -109,9 +100,9 @@ while True:
 
         V = raw_input("What is the velocity (Kms-1), v?: ")
 
-        Vint = np.float64(V)
+        Vint = np.float(V)
 
-        Vel = CloudVel(Vint, time_cu, dist_cu)
+        Vel = Vint/vel_cu*(au.km/au.s)
 
         print Vel
 
@@ -120,6 +111,82 @@ while True:
         if decision == 'y' or decision == 'yes':
 
             t = 0
+
+        else:
+
+            break
+
+    if parameter == 'time-code':
+
+        year_or_second = raw_input("MYears, Years or Seconds?: ")
+
+        if year_or_second == 'MY' or year_or_second == 'Myears':
+
+            t = raw_input("What is the time (Myear), t?: ")
+
+            t_year = np.float64(t)*au.megayear.to('s')*au.s
+
+            tint = t_year / time_cu
+
+            print tint
+
+        if year_or_second == 'Y' or year_or_second == 'Years':
+
+            t = raw_input("What is the time (year), t?: ")
+
+            t_year = np.float64(t)*au.year.to('s')*au.s
+
+            tint = t_year / time_cu
+
+            print tint
+
+        if year_or_second == 'S' or year_or_second == 'Seconds':
+
+            t = raw_input("What is the time (s), t?: ")
+
+            tint = np.float(t)*au.s / time_cu
+
+            print tint
+
+        decision = raw_input("New calculation (y/n)?: ")
+
+        if decision == 'y' or decision == 'yes':
+
+            continue
+
+        else:
+
+            break
+
+    if parameter == 'time-real':
+
+        t = raw_input("What is the time (code), t?: ")
+
+        t_int = np.float(t)
+
+        year_or_second = raw_input("MYears, Years or Seconds?: ")
+
+        if year_or_second == 'MY' or year_or_second == 'Myears':
+
+            t_real = (t_int * time_cu)/(au.megayear.to('s')*(au.s / au.megayear))
+
+        if year_or_second == 'Y' or year_or_second == 'Years':
+
+            t_real = (t_int * time_cu)/(au.year.to('s')*(au.s / au.year))
+
+        if year_or_second == 'S' or year_or_second == 'Seconds':
+
+            t_real = t_int * time_cu
+
+        tint = t_real
+
+        print tint
+
+        decision = raw_input("New calculation (y/n)?: ")
+
+        if decision == 'y' or decision == 'yes':
+
+            continue
 
         else:
 
@@ -134,23 +201,19 @@ while True:
 
             V = raw_input("What is the velocity (Code_Units), v?: ")
 
-            Vint = np.float64(V)
+            Vint = np.float(V)
 
         try:
 
-            Lint = CR
+            dint = L
 
         except NameError:
 
-            L = raw_input("What is the radius of the cloud (Code_Units), r?: ")
+            d = raw_input("What is the seperation in terms of cloud radii (Code_Units), d?: ")
 
-            Lint = np.float64(L)
+            dint = np.float(d)
 
-        t = raw_input("What is the seperation in terms of cloud radii (Code_Units), t?: ")
-
-        tint = np.float64(t)
-
-        T_Cross = (tint*Lint)/Vint
+        T_Cross = dint/Vint
 
         print T_Cross
 
@@ -166,19 +229,25 @@ while True:
 
     if parameter == 'crossing-time-int':
 
-        V_disp = raw_input("What is the velocity dispersion (Code_Units), v?: ")
+        try:
 
-        Vint_disp = np.float64(V_disp)
+            Vint_disp
+
+        except NameError:
+
+            V_disp = raw_input("What is the velocity dispersion (Code_Units), v?: ")
+
+            Vint_disp = np.float(V_disp)
 
         try:
 
-            Rint = CR
+            Rint
 
         except NameError:
 
             R = raw_input("What is the radius of the cloud (Code_Units), r?: ")
 
-            Rint = np.float64(R)
+            Rint = np.float(R)
 
         T_Cross = Rint / Vint_disp
 
@@ -197,36 +266,44 @@ while True:
     if parameter == 'optimal-distance':
 
         try:
+
             Vel = Vint
 
         except NameError:
 
             V = raw_input("What is the velocity (Code_Units), v?: ")
 
-            Vint = np.float64(V)
+            Vint = np.float(V)
 
         try:
+
             Vint_disp
 
         except NameError:
 
             V_disp = raw_input("What is the velocity dispersion (Code_Units), v?: ")
 
-            Vint_disp = np.float64(V_disp)
+            Vint_disp = np.float(V_disp)
 
         try:
 
-            Rint = CR
+            Rint
 
         except NameError:
 
             R = raw_input("What is the radius of the cloud (Code_Units), r?: ")
 
-            Rint = np.float64(R)
+            Rint = np.float(R)
 
         L = Vint*(Rint / Vint_disp)
 
-        print L
+        if L <= Rint:
+
+            print Rint
+
+        else:
+
+            print L
 
         decision = raw_input("New calculation (y/n)?: ")
 
@@ -242,13 +319,13 @@ while True:
 
         try:
 
-            Rint = CR
+            Rint
 
         except NameError:
 
             R = raw_input("What is the radius of the cloud (Code_Units), r?: ")
 
-            Rint = np.float64(R)
+            Rint = np.float(R)
 
         try:
             Dint = L
@@ -257,7 +334,7 @@ while True:
 
             D = raw_input("What is the optimal distance between the two clouds (Code_Units), d?: ")
 
-            Dint = np.float64(D)
+            Dint = np.float(D)
 
         boxsize = 4*Rint + Dint
 
@@ -275,11 +352,11 @@ while True:
 
             break
 
-    if parameter == 'No.density':
+    if parameter == 'no.density':
 
         nd = raw_input("What is the number density (Code_Units), n?: ")
 
-        N_int = np.float64(nd)*(au.cm**-3)
+        N_int = np.float(nd)*(au.cm**-3)
 
         D_int = N_int*(ap.m_p.to('g'))/rho_cu
 
