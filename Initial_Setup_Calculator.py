@@ -44,6 +44,14 @@ rho_cu = M_cu/dist_cu**3
 
 print "Density unit : ", rho_cu
 
+ergs_cu = (M_cu*dist_cu**2)/time_cu**2
+
+print "Energy unit (ergs) : ", ergs_cu
+
+
+print "Energy density : ", ergs_cu/dist_cu**3
+
+
 """ Calculator """
 
 
@@ -194,14 +202,31 @@ while True:
 
     if parameter == 'crossing-time-ext':
 
-        try:
-            Vel = Vint
+        Mirror = raw_input("Are the velocities of the clouds mirrored (y/n)?: ")
 
-        except NameError:
+        if Mirror == 'y' or Mirror == 'yes':
 
-            V = raw_input("What is the velocity (Code_Units), v?: ")
+            try:
 
-            Vint = np.float(V)
+                V1 = Vint
+                V2 = -Vint
+
+            except NameError:
+
+                V = raw_input("What is the velocity (Code_Units), v?: ")
+
+                V1 = np.float(V)
+                V2 = -np.float(V)
+
+        else:
+
+            V_1 = raw_input("What is the velocity of Cloud 1 (Code_Units), v?: ")
+
+            V_2 = raw_input("What is the velocity of Cloud 2 (Code_Units), v?: ")
+
+            V1 = np.float(V_1)
+
+            V2 = np.float(V_2)
 
         try:
 
@@ -213,7 +238,9 @@ while True:
 
             dint = np.float(d)
 
-        T_Cross = dint/Vint
+        dV = V1 - V2
+
+        T_Cross = dint/dV
 
         print T_Cross
 
@@ -265,15 +292,31 @@ while True:
 
     if parameter == 'optimal-distance':
 
-        try:
+        Mirror = raw_input("Are the velocities of the clouds mirrored (y/n)?: ")
 
-            Vel = Vint
+        if Mirror == 'y' or Mirror == 'yes':
 
-        except NameError:
+            try:
 
-            V = raw_input("What is the velocity (Code_Units), v?: ")
+                V1 = Vint
+                V2 = -Vint
 
-            Vint = np.float(V)
+            except NameError:
+
+                V = raw_input("What is the velocity (Code_Units), v?: ")
+
+                V1 = np.float(V)
+                V2 = -np.float(V)
+
+        else:
+
+            V_1 = raw_input("What is the velocity of Cloud 1 (Code_Units), v?: ")
+
+            V_2 = raw_input("What is the velocity of Cloud 2 (Code_Units), v?: ")
+
+            V1 = np.float(V_1)
+
+            V2 = np.float(V_2)
 
         try:
 
@@ -295,7 +338,9 @@ while True:
 
             Rint = np.float(R)
 
-        L = Vint*(Rint / Vint_disp)
+        dV = V1 - V2
+
+        L = dV*(Rint / Vint_disp)
 
         if L <= Rint:
 

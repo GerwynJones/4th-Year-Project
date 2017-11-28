@@ -65,4 +65,11 @@ for file in os.listdir('.'):
         print(file)
 
 
-print au.megayear
+print ap.k_B.cgs
+
+
+a = np.linspace(0, 10, 12)
+
+print a
+
+print np.reshape(a, (3, -1))
