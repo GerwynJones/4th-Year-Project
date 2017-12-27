@@ -55,21 +55,25 @@ V = np.sqrt(2*K_E)/m
 
 print V
 
-print '\nAvailable files:\n'
+print 343.541018948*2
+
+print 343.541018948*2 + 2255.89284819
+
+print (5e-03)*(1.4e-04)
+
+print (1.4e-04) - (5e-03)*(1.4e-04)
+
+print (1.393e-04)
+
+print 57*(72/20)
+
+print (57*(72/20))/82.22
 
 
-for file in os.listdir('.'):
+print 6661316/1665327
 
-    if fnmatch.fnmatch(file, '.py'):
-
-        print(file)
+print 39967856/4995981
 
 
-print ap.k_B.cgs
 
-
-a = np.linspace(0, 10, 12)
-
-print a
-
-print np.reshape(a, (3, -1))
+print 4995981/1665327

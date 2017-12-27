@@ -74,6 +74,20 @@ def CloudRadius(n, m_cloud):
 
 while True:
 
+    print " "
+
+    print "Calculation options : "
+
+    print " "
+
+    print "Radius, Velocity, Time-Code, Time-Real, Crossing-Time-Ext, Crossing-Time-Int"
+
+    print " "
+
+    print "Optimal-Distance, Boxsize, No.Density"
+
+    print " "
+
     parameter = raw_input("What to calculate or 0 to exit: ")
 
     if parameter == '0':
@@ -108,11 +122,11 @@ while True:
 
         V = raw_input("What is the velocity (Kms-1), v?: ")
 
-        Vint = np.float(V)
+        Vel = np.float(V)
 
-        Vel = Vint/vel_cu*(au.km/au.s)
+        Vint = Vel/vel_cu*(au.km/au.s)
 
-        print Vel
+        print Vint
 
         decision = raw_input("New calculation (y/n)?: ")
 
@@ -338,11 +352,14 @@ while True:
 
             Rint = np.float(R)
 
+
         dV = V1 - V2
 
         L = dV*(Rint / Vint_disp)
 
         if L <= Rint:
+
+            print "Less than Radius    "
 
             print Rint
 
