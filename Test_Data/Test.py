@@ -55,25 +55,9 @@ V = np.sqrt(2*K_E)/m
 
 print V
 
-print 343.541018948*2
 
-print 343.541018948*2 + 2255.89284819
+POS = np.zeros((10, 1))
 
-print (5e-03)*(1.4e-04)
+for i in range(len(POS[:, 0])):
 
-print (1.4e-04) - (5e-03)*(1.4e-04)
-
-print (1.393e-04)
-
-print 57*(72/20)
-
-print (57*(72/20))/82.22
-
-
-print 6661316/1665327
-
-print 39967856/4995981
-
-
-
-print 4995981/1665327
+    POS[i, 0] = np.linspace(0, 1, 20)
