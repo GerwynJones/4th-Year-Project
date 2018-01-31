@@ -132,7 +132,7 @@ while filecount > 0:
 
         Z = np.int(raw_input("Enter chem species (See options above) : "))
 
-        CHEM_Range = CHEM[Z, :][(n >= (X - Y)) & (n <= (X + Y))]
+        CHEM_Range = CHEM[Z, :][(ntot >= (X - Y)) & (ntot <= (X + Y))]
 
         print np.mean(CHEM_Range)
 
@@ -149,7 +149,7 @@ while filecount > 0:
 
         Y = np.int(raw_input("Enter density range (cm^{-3}) : "))
 
-        TEMP_Range = TEMP[(n >= (X - Y)) & (n <= (X + Y))]
+        TEMP_Range = TEMP[(ntot >= (X - Y)) & (ntot <= (X + Y))]
 
         print np.mean(TEMP_Range)
 

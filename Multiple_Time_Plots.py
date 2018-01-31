@@ -25,7 +25,6 @@ thin_factor = 100
 v_log = 1
 
 
-
 print '\nAvailable files:\n'
 
 path = inputfile = raw_input("Enter path: ")
@@ -63,6 +62,10 @@ TOTMASS_T = np.zeros((2, len(files)))
 CUM_MASS = np.zeros(len(files))
 
 Peak_Abundances = np.zeros((1, len(files)))
+
+Density = np.zeros(len(files))
+
+Temperature = np.zeros(len(files))
 
 
 for j in range(len(files)):
@@ -123,7 +126,7 @@ for j in range(len(files)):
 
     MASS = mass[:ngas]
 
-    ### TEMP ###
+    ### TEMP AND DENSITY plots and calculations ###
 
     ABHE = 0.1
 
@@ -134,6 +137,11 @@ for j in range(len(files)):
     ntot = (1.0 + ABHE - CHEM[0, :] + CHEM[1, :]) * n
 
     TEMP = 2.0 * Energy / (3.0 * ntot * k_B)
+
+
+    Density[j] = np.max(ntot.value)
+
+    Temperature[j] = np.min(TEMP.value)
 
 
     #### MASS and Abundances plots and calculations ####
@@ -161,13 +169,29 @@ for j in range(len(files)):
     TOTMASS_T[0, j] = np.sum(T_between30and350)
 
 
+
 plt.figure()
 
-plt.plot(TIME, Peak_Abundances[0, :], marker='x', linestyle='None')
+plt.semilogy(TIME, Density, marker='x', linestyle='None', label="Density")
+
+plt.semilogy(TIME, Temperature, marker='x', linestyle='None', label="Temperature")
+
+plt.xlabel(r'$Time \/ (CODE)$')
+
+plt.ylabel(r'$ Density/Temperature $')
+
+plt.legend(loc='best')
+
+
+plt.figure()
+
+plt.semilogy(TIME, Peak_Abundances[0, :], marker='x', linestyle='None', label="H2")
 
 plt.xlabel(r'$Time \/ (CODE)$')
 
 plt.ylabel(r'$Peak Abundances \/$')
+
+plt.legend(loc='best')
 
 plt.figure()
 
@@ -189,18 +213,7 @@ plt.xlabel(r'$Time \/ (CODE)$')
 
 plt.ylabel(r'$Mass \/ $')
 
+
+
 plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
 

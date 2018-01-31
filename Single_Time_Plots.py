@@ -21,6 +21,7 @@ thin_factor = 100
 
 v_log = 1
 
+
 while filecount > 0:
 
     inputdir = raw_input("Enter directory: ")
