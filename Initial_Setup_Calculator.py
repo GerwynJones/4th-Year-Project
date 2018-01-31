@@ -84,7 +84,7 @@ while True:
 
     print " "
 
-    print "Optimal-Distance, Boxsize, No.Density"
+    print "Optimal-Distance, Boxsize, No.Density, Second-Cloud-Distance"
 
     print " "
 
@@ -94,7 +94,7 @@ while True:
 
         break
 
-    if parameter == 'radius':
+    if parameter == 'radius' or parameter == 'Radius':
 
         n = raw_input("What is the number density, n?: ")
 
@@ -118,7 +118,7 @@ while True:
 
             break
 
-    if parameter == 'velocity':
+    if parameter == 'velocity' or parameter == 'Velocity':
 
         V = raw_input("What is the velocity (Kms-1), v?: ")
 
@@ -138,11 +138,11 @@ while True:
 
             break
 
-    if parameter == 'time-code':
+    if parameter == 'time-code' or parameter == 'Time-Code' or parameter == 'time code':
 
         year_or_second = raw_input("MYears, Years or Seconds?: ")
 
-        if year_or_second == 'MY' or year_or_second == 'Myears':
+        if year_or_second == 'MY' or year_or_second == 'my' or year_or_second == 'Myears' or year_or_second == 'MYears' or year_or_second == 'myears':
 
             t = raw_input("What is the time (Myear), t?: ")
 
@@ -152,7 +152,7 @@ while True:
 
             print tint
 
-        if year_or_second == 'Y' or year_or_second == 'Years':
+        if year_or_second == 'Y' or year_or_second == 'y' or year_or_second == 'Years' or year_or_second == 'years' or year_or_second == 'year':
 
             t = raw_input("What is the time (year), t?: ")
 
@@ -162,7 +162,7 @@ while True:
 
             print tint
 
-        if year_or_second == 'S' or year_or_second == 'Seconds':
+        if year_or_second == 'S' or year_or_second == 's' or year_or_second == 'Seconds' or year_or_second == 'seconds':
 
             t = raw_input("What is the time (s), t?: ")
 
@@ -180,7 +180,7 @@ while True:
 
             break
 
-    if parameter == 'time-real':
+    if parameter == 'time-real' or parameter == 'Time-Real' or parameter == 'time real':
 
         t = raw_input("What is the time (code), t?: ")
 
@@ -188,15 +188,15 @@ while True:
 
         year_or_second = raw_input("MYears, Years or Seconds?: ")
 
-        if year_or_second == 'MY' or year_or_second == 'Myears':
+        if year_or_second == 'MY' or year_or_second == 'my' or year_or_second == 'Myears' or year_or_second == 'MYears' or year_or_second == 'myears':
 
             t_real = (t_int * time_cu)/(au.megayear.to('s')*(au.s / au.megayear))
 
-        if year_or_second == 'Y' or year_or_second == 'Years':
+        if year_or_second == 'Y' or year_or_second == 'y' or year_or_second == 'Years' or year_or_second == 'years' or year_or_second == 'year':
 
             t_real = (t_int * time_cu)/(au.year.to('s')*(au.s / au.year))
 
-        if year_or_second == 'S' or year_or_second == 'Seconds':
+        if year_or_second == 'S' or year_or_second == 's' or year_or_second == 'Seconds' or year_or_second == 'seconds':
 
             t_real = t_int * time_cu
 
@@ -214,7 +214,7 @@ while True:
 
             break
 
-    if parameter == 'crossing-time-ext':
+    if parameter == 'crossing-time-ext' or parameter == 'Crossing-Time-Ext' or parameter == 'crossing time ext':
 
         Mirror = raw_input("Are the velocities of the clouds mirrored (y/n)?: ")
 
@@ -268,7 +268,7 @@ while True:
 
             break
 
-    if parameter == 'crossing-time-int':
+    if parameter == 'crossing-time-int' or parameter == 'Crossing-Time-Int' or parameter == 'crossing time int':
 
         try:
 
@@ -304,7 +304,7 @@ while True:
 
             break
 
-    if parameter == 'optimal-distance':
+    if parameter == 'optimal-distance' or parameter == 'Optimal-Distance' or parameter == 'optimal distance':
 
         Mirror = raw_input("Are the velocities of the clouds mirrored (y/n)?: ")
 
@@ -352,10 +352,19 @@ while True:
 
             Rint = np.float(R)
 
+        Tc_ratio = raw_input("How much of crossing time (Percent or Fraction)?: ")
+
+        Tcross_ratio = np.float(Tc_ratio)
+
+        if Tcross_ratio > 1:
+
+            Tcross_ratio = Tcross_ratio/100
+
+        T_Cross = (Rint / Vint_disp)
 
         dV = V1 - V2
 
-        L = dV*(Rint / Vint_disp)
+        L = dV*T_Cross*Tcross_ratio
 
         if L <= Rint:
 
@@ -377,7 +386,7 @@ while True:
 
             break
 
-    if parameter == 'boxsize':
+    if parameter == 'boxsize' or parameter == 'Boxsize':
 
         try:
 
@@ -404,6 +413,10 @@ while True:
 
         print "Y,Z =", boxsize/2
 
+        print "X1 =", Rint*2
+
+        print "X2 =", Rint*2 + Dint
+
         decision = raw_input("New calculation (y/n)?: ")
 
         if decision == 'y' or decision == 'yes':
@@ -414,7 +427,7 @@ while True:
 
             break
 
-    if parameter == 'no.density':
+    if parameter == 'no.density' or parameter == 'No.Density':
 
         nd = raw_input("What is the number density (Code_Units), n?: ")
 
@@ -433,3 +446,4 @@ while True:
         else:
 
             break
+

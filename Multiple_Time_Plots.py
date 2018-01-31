@@ -11,7 +11,7 @@ import sys
 
 import matplotlib.pyplot as plt
 
-from arepo_read_master import *
+from Arepo_Read_Master import *
 
 
 ### THE MEAT OF THE MATTER ###
@@ -45,7 +45,7 @@ print files
 
 decision = raw_input("Continue ? : ")
 
-if decision == "yes" or decision == "y":
+if decision == "yes" or decision == "y" or decision == "":
 
     print "Continue"
 
@@ -53,11 +53,16 @@ else:
 
     sys.exit()
 
+
 TIME = np.zeros(len(files))
 
 TOTMASS_n = np.zeros((2, len(files)))
 
 TOTMASS_T = np.zeros((2, len(files)))
+
+CUM_MASS = np.zeros(len(files))
+
+Peak_Abundances = np.zeros((1, len(files)))
 
 
 for j in range(len(files)):
@@ -132,6 +137,63 @@ for j in range(len(files)):
 
 
     #### MASS and Abundances plots and calculations ####
+
+    TIME[j] = time
+
+    Peak_H2 = np.max(CHEM[0, :])
+
+    Peak_Abundances[0, j] = Peak_H2
+
+    n_lessthan1e2 = n.value[n.value <= 1e2]
+
+    n_lessthan1e3 = n.value[n.value <= 1e3]
+
+    T_lessthan30 = TEMP.value[TEMP.value <= 30]
+
+    T_between30and350 = TEMP.value[(TEMP.value > 30) & (TEMP.value < 350)]
+
+    TOTMASS_n[0, j] = np.sum(n_lessthan1e2)
+
+    TOTMASS_n[1, j] = np.sum(n_lessthan1e3)
+
+    TOTMASS_T[0, j] = np.sum(T_lessthan30)
+
+    TOTMASS_T[0, j] = np.sum(T_between30and350)
+
+
+plt.figure()
+
+plt.plot(TIME, Peak_Abundances[0, :], marker='x', linestyle='None')
+
+plt.xlabel(r'$Time \/ (CODE)$')
+
+plt.ylabel(r'$Peak Abundances \/$')
+
+plt.figure()
+
+plt.plot(TIME, TOTMASS_n[0, :], marker='x', linestyle='None')
+
+plt.plot(TIME, TOTMASS_n[1, :], marker='x', linestyle='None')
+
+plt.xlabel(r'$Time \/ (CODE)$')
+
+plt.ylabel(r'$Mass \/ $')
+
+plt.figure()
+
+plt.plot(TIME, TOTMASS_T[0, :], marker='x', linestyle='None')
+
+plt.plot(TIME, TOTMASS_T[1, :], marker='x', linestyle='None')
+
+plt.xlabel(r'$Time \/ (CODE)$')
+
+plt.ylabel(r'$Mass \/ $')
+
+plt.show()
+
+
+
+
 
 
 
