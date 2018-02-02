@@ -88,7 +88,9 @@ while filecount > 0:
 
     MASS = MASS[:ngas]
 
+
     ### TEMP ###
+
 
     ABHE = 0.1
 
@@ -99,6 +101,7 @@ while filecount > 0:
     ntot = (1.0 + ABHE - CHEM[0, :] + CHEM[1, :]) * n
 
     TEMP = 2.0 * Energy / (3.0 * ntot * k_B)
+
 
     # print np.min(RHO)
     # print np.max(RHO)

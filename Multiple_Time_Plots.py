@@ -55,13 +55,13 @@ else:
 
 TIME = np.zeros(len(files))
 
-TOTMASS_n = np.zeros((2, len(files)))
+TOTMASS_n = np.zeros((3, len(files)))
 
-TOTMASS_T = np.zeros((2, len(files)))
+TOTMASS_T = np.zeros((3, len(files)))
 
 CUM_MASS = np.zeros(len(files))
 
-Peak_Abundances = np.zeros((1, len(files)))
+Peak_Abundances = np.zeros((3, len(files)))
 
 Density = np.zeros(len(files))
 
@@ -122,9 +122,11 @@ for j in range(len(files)):
 
     nspecies = DATA[22]
 
+
     POS = pos[:ngas, :]
 
     MASS = mass[:ngas]
+
 
     ### TEMP AND DENSITY plots and calculations ###
 
@@ -146,27 +148,49 @@ for j in range(len(files)):
 
     #### MASS and Abundances plots and calculations ####
 
-    TIME[j] = time
+    TIME[j] = time * (time_cu.value/au.megayear.to('s'))
+
 
     Peak_H2 = np.max(CHEM[0, :])
 
+    Peak_Hplus = np.max(CHEM[1, :])
+
+    Peak_CO = np.max(CHEM[2, :])
+
+
     Peak_Abundances[0, j] = Peak_H2
 
-    n_lessthan1e2 = n.value[n.value <= 1e2]
+    Peak_Abundances[1, j] = Peak_Hplus
 
-    n_lessthan1e3 = n.value[n.value <= 1e3]
+    Peak_Abundances[2, j] = Peak_CO
 
-    T_lessthan30 = TEMP.value[TEMP.value <= 30]
 
-    T_between30and350 = TEMP.value[(TEMP.value > 30) & (TEMP.value < 350)]
+    n_lessthan1e2 = MASS[n.value >= 1e2]
+
+    n_lessthan1e3 = MASS[n.value >= 1e3]
+
+    n_lessthan1e4 = MASS[n.value >= 1e4]
+
+
+    T_lessthan30 = MASS[TEMP.value <= 30]
+
+    T_between30and350 = MASS[(TEMP.value > 30) & (TEMP.value < 350)]
+
+    T_between350and8500 = MASS[(TEMP.value > 350) & (TEMP.value < 8500)]
+
 
     TOTMASS_n[0, j] = np.sum(n_lessthan1e2)
 
     TOTMASS_n[1, j] = np.sum(n_lessthan1e3)
 
+    TOTMASS_n[2, j] = np.sum(n_lessthan1e4)
+
+
     TOTMASS_T[0, j] = np.sum(T_lessthan30)
 
-    TOTMASS_T[0, j] = np.sum(T_between30and350)
+    TOTMASS_T[1, j] = np.sum(T_between30and350)
+
+    TOTMASS_T[2, j] = np.sum(T_between350and8500)
 
 
 
@@ -176,7 +200,7 @@ plt.semilogy(TIME, Density, marker='x', linestyle='None', label="Density")
 
 plt.semilogy(TIME, Temperature, marker='x', linestyle='None', label="Temperature")
 
-plt.xlabel(r'$Time \/ (CODE)$')
+plt.xlabel(r'$Time \/ [Myr]$')
 
 plt.ylabel(r'$ Density/Temperature $')
 
@@ -187,33 +211,45 @@ plt.figure()
 
 plt.semilogy(TIME, Peak_Abundances[0, :], marker='x', linestyle='None', label="H2")
 
-plt.xlabel(r'$Time \/ (CODE)$')
+plt.semilogy(TIME, Peak_Abundances[1, :], marker='x', linestyle='None', label="H+")
 
-plt.ylabel(r'$Peak Abundances \/$')
+plt.semilogy(TIME, Peak_Abundances[2, :], marker='x', linestyle='None', label="CO")
+
+plt.xlabel(r'$Time \/ [Myr]$')
+
+plt.ylabel(r'$Peak Abundances$')
 
 plt.legend(loc='best')
 
-plt.figure()
-
-plt.plot(TIME, TOTMASS_n[0, :], marker='x', linestyle='None')
-
-plt.plot(TIME, TOTMASS_n[1, :], marker='x', linestyle='None')
-
-plt.xlabel(r'$Time \/ (CODE)$')
-
-plt.ylabel(r'$Mass \/ $')
 
 plt.figure()
 
-plt.plot(TIME, TOTMASS_T[0, :], marker='x', linestyle='None')
+plt.semilogy(TIME, TOTMASS_n[0, :], marker='x', linestyle='None', label=r"$n > 1x10^2 \/ cm^{-3}$")
 
-plt.plot(TIME, TOTMASS_T[1, :], marker='x', linestyle='None')
+plt.semilogy(TIME, TOTMASS_n[1, :], marker='x', linestyle='None', label=r"$n > 1x10^3 \/ cm^{-3}$")
 
-plt.xlabel(r'$Time \/ (CODE)$')
+plt.semilogy(TIME, TOTMASS_n[2, :], marker='x', linestyle='None', label=r"$n > 1x10^4 \/ cm^{-3}$")
 
-plt.ylabel(r'$Mass \/ $')
+plt.xlabel(r'$Time \/ [Myr]$')
+
+plt.ylabel(r'$Mass \/ [M_{\odot}]$')
+
+plt.legend(loc='best')
 
 
+plt.figure()
+
+plt.semilogy(TIME, TOTMASS_T[0, :], marker='x', linestyle='None', label="T < 30K")
+
+plt.semilogy(TIME, TOTMASS_T[1, :], marker='x', linestyle='None', label="30K < T < 350K")
+
+plt.semilogy(TIME, TOTMASS_T[2, :], marker='x', linestyle='None', label="350K < T < 8500K")
+
+plt.xlabel(r'$Time \/ [Myr]$')
+
+plt.ylabel(r'$Mass \/ [M_{\odot}]$')
+
+plt.legend(loc='best')
 
 plt.show()
 
