@@ -4,23 +4,36 @@
 %  2)  BibTex File
 %  3)  PDFLaTex File.tex
 %  4)  PDFLaTex File.tex
-%
+
+%%%%%%%%%%%%%%%%%%%% START %%%%%%%%%%%%%%%%%%
+
 \documentclass[11pt, a4paper]{article}
 
 \usepackage[affil-it]{authblk}% Same as APS affiliation
-\usepackage{natbib}% Use with BibTex
+
 \usepackage{graphicx}% Include figure files
+\usepackage[space]{grffile}% Loading figure files with spaces
+
+\graphicspath{{Figures/}}% Path of figures
+
+\usepackage{float}
+
 \usepackage{amsmath}% Include math style
 \usepackage{amsfonts}% Include font style
 \usepackage{amssymb}% Include symbol symbols
+
 \usepackage{dcolumn}% Align table columns on decimal point
+
 \usepackage{bm}% Bold math
+%\usepackage[mathlines]{lineno}% Enable numbering of text and display math
 \usepackage{url}% Use urls
 %\usepackage{hyperref}% add hypertext capabilities
-%\usepackage[mathlines]{lineno}% Enable numbering of text and display math
+
 \pagestyle{plain}
+\usepackage{natbib}% Use with BibTex
 \renewcommand\harvardyearleft{\unskip, }
 \renewcommand\harvardyearright[1]{.}
+
 %\usepackage[showframe,%Uncomment any one of the following lines to test 
 %scale=0.7, marginratio={1:1, 2:3}, ignoreall,% default settings
 %text={7in,10in},centering,
@@ -29,6 +42,7 @@
 %hmargin={1cm,0.8in},
 %]{geometry}
 
+%%%%%%%%%%%%%%%%%%%% BEGIN DOCUMENT %%%%%%%%%%%%%%%%%%
 
 \begin{document}
 
@@ -76,18 +90,19 @@ Refer back to them as e.g. equation~(\ref{eq:quadratic}).
 %%%%%%%%%%%%%%%%%%%% CONCLUSION %%%%%%%%%%%%%%%%%%
 
 
-\section{\label{sec:level1} Conclusion }
+\section{\label{sec:level2} Conclusion }
 
 Talk about Conclusion
 \\
-Figures are referred to as e.g. Fig.~\ref{fig:example_figure}
+Figures are referred to as e.g. Figure.~\ref{fig:example_figure}
 
 % Example figure
 \begin{figure}[h]
 	% To include a figure from a file named example.*
 	% Allowable file formats are eps or ps if compiling using latex
 	% or pdf, png, jpg if compiling using pdflatex
-	\includegraphics[width=\columnwidth]{Example1}
+	\centering
+	\includegraphics[width=\columnwidth]{Colliding_Clouds_022.png}
     \caption{This is an example figure. Captions appear below each figure.
 	Give enough detail for the reader to understand what they're looking at,
 	but leave detailed discussion to the main body of the text.}
@@ -101,3 +116,5 @@ Figures are referred to as e.g. Fig.~\ref{fig:example_figure}
 \bibliography{BibTex_Entries}
 
 \end{document}
+
+%%%%%%%%%%%%%%%%%%%% END %%%%%%%%%%%%%%%%%%
