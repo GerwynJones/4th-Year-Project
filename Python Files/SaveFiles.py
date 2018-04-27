@@ -69,15 +69,13 @@ init_file_dir = inputdir + Files_sorted[0]
 _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, num_species = aread(init_file_dir)
 
 
-TIME = np.zeros(len(Files_sorted))
+Time = np.zeros(len(Files_sorted))
 
 TOTMASS_n = np.zeros((4, len(Files_sorted)))
 
 TOTMASS_T = np.zeros((4, len(Files_sorted)))
 
 CUM_MASS = np.zeros(len(Files_sorted))
-
-Peak_Abundances = np.zeros((num_species, len(Files_sorted)))
 
 TotMassCO = np.zeros(len(Files_sorted))
 
@@ -90,6 +88,19 @@ MassFraction = np.zeros((num_species, len(Files_sorted)))
 Density_max = np.zeros(len(Files_sorted))
 
 Temperature_min = np.zeros(len(Files_sorted))
+
+NSink = np.zeros(len(Files_sorted))
+
+Time_Code = np.zeros(len(Files_sorted))
+
+
+if num_species == 3:
+
+    Peak_Abundances = np.zeros((num_species + 1, len(Files_sorted)))
+
+if num_species == 9:
+
+    Peak_Abundances = np.zeros((num_species, len(Files_sorted)))
 
 
 for j in range(len(Files_sorted)):
@@ -180,14 +191,14 @@ for j in range(len(Files_sorted)):
 
     #### MASS and Abundances plots and calculations ####
 
-    TIME[j] = time * (time_cu.value/au.megayear.to('s'))
+    Time[j] = time * (time_cu.value/au.megayear.to('s'))
 
 
     #### Chemistry for NL97 and NL99 ####
 
     Max_Carbon = 1.4e-4
 
-    Max_Hydrogen = 1
+    Max_Hydrogen = 0.5
 
     Totmass = 2e4
 
@@ -221,7 +232,7 @@ for j in range(len(Files_sorted)):
 
         MassFraction[1, j] = TotMassCplus[j]/(Max_Carbon*Totmass)
 
-        MassFraction[2, j] = TotMassH2[j] / (Max_Hydrogen * Totmass)
+        MassFraction[2, j] = TotMassH2[j] / (Max_Hydrogen*Totmass)
 
     if num_species == 9:
 
@@ -272,7 +283,7 @@ for j in range(len(Files_sorted)):
 
         MassFraction[1, j] = TotMassCplus[j]/(Max_Carbon*Totmass)
 
-        MassFraction[2, j] = TotMassH2[j] / (Max_Hydrogen * Totmass)
+        MassFraction[2, j] = TotMassH2[j] / (Max_Hydrogen*Totmass)
 
 
     n_greaterthan10 = MASS[n.value >= 10]
@@ -319,6 +330,11 @@ for j in range(len(Files_sorted)):
     TOTMASS_T[3, j] = np.sum(T_overC)
 
 
+    NSink[j] = nsink
+
+    Time_Code[j] = time
+
+
 # InputDir = raw_input("Enter either ../ or ./ : ")
 
 Input = raw_input("Enter name of pkl file location : ")
@@ -336,7 +352,7 @@ if File[-1] == '_':
 Filename = "../" + File + ".pkl"
 
 
-data = [num_species,TIME, Density_max, Temperature_min, Peak_Abundances, MassFraction, TOTMASS_n, TOTMASS_T, A, B, C, D]
+data = [num_species, Time_Code, Time, Density_max, Temperature_min, Peak_Abundances, MassFraction, TOTMASS_n, TOTMASS_T, A, B, C, D, NSink]
 
 with open(Filename, 'wb') as outfile:
     pickle.dump(data, outfile, pickle.HIGHEST_PROTOCOL)

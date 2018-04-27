@@ -536,23 +536,25 @@ while filecount > 0:
 
         plt.figure(figsize=(10, 8))
 
-        n_pdf = n.value[n.value >= 2]
+        n_pdf = n.value[n.value >= 1]
 
         nmin = np.min(n_pdf)
 
         nmax = np.max(n_pdf)
 
-        nbins = 50
+        nbins = 150
 
-        dlogn = (np.log10(nmax) - np.log10(nmin)) / nbins
+        dlogn = np.log10(nmax - nmin) / nbins
 
         nbinmin = nmin
 
         Massbin = np.zeros(nbins)
 
+#        nbinmax = np.zeros(nbins)
+
         nbincent = np.zeros(nbins)
 
-        for i in xrange(1, nbins+1):
+        for i in xrange(1, nbins + 1):
 
             nbinmax = 10 ** (i * dlogn)
 
@@ -566,6 +568,9 @@ while filecount > 0:
 
             nbinmin = nbinmax
 
+#        print(nbincent[-1])
+
+#        print(nbinmax)
 
         MassPDF = Massbin/np.sum(Massbin)
 
@@ -573,7 +578,7 @@ while filecount > 0:
 
         plt.xlabel(r'$n\ [cm^{-3}]$')
 
-        plt.ylabel(r'$Mass-weighted PDF$')
+        plt.ylabel(r'$Mass-weighted\ PDF$')
 
         plt.show()
 

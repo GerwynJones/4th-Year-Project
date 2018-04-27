@@ -38,7 +38,7 @@ for i in range(0, nbins-1):
 
     nbinmin = nbinmax
 
-    print Massbin
+    print(Massbin)
 
 
 
