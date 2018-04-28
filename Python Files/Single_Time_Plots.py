@@ -140,11 +140,13 @@ y_max = np.max(POS[:, 1])
 z_min = np.min(POS[:, 2])
 z_max = np.max(POS[:, 2])
 
+Savelocation = "../Plot_Files/"
+
 while filecount > 0:
 
     ### ###
 
-    parameter = raw_input("Enter data tag to plot (Default = Density; options = Dusttemp, Chemplot, Chem, Mass, Temp, PDF or 0 to change file or exit) : ")
+    parameter = raw_input("Enter data tag to plot (Default = Density; options = Temp, Chemplot, Chem, Mass, Temp, PDF, Cumulative or 0 to change file or exit) : ")
 
     print(" ")
 
@@ -228,7 +230,9 @@ while filecount > 0:
 
         plt.ylabel(r"$%s\ [pc]$" % lab2)
 
-        plt.show()
+        DEN_Save = Savelocation + "Density Plot.png"
+
+        fig.savefig(DEN_Save, dpi=300, format='png', bbox_inches='tight')
 
         xy_decision = raw_input("Change scale? : ")
 
@@ -270,7 +274,7 @@ while filecount > 0:
         ax1 = np.int(ax1_decision)
         ax2 = np.int(ax2_decision)
 
-        plt.figure(figsize=(10, 8))
+        fig = plt.figure(figsize=(10, 8))
 
         if v_log == 1:
 
@@ -328,7 +332,9 @@ while filecount > 0:
 
         plt.ylabel(r"$%s\ [pc]$" % lab2)
 
-        plt.show()
+        CHEMPLOT_Save = Savelocation + "Chemistry Plot.png"
+
+        fig.savefig(CHEMPLOT_Save, dpi=300, format='png', bbox_inches='tight')
 
         xy_decision = raw_input("Change scale? : ")
 
@@ -350,13 +356,15 @@ while filecount > 0:
 
             break
 
-    elif parameter == 'dusttemp' or parameter == 'DUSTTEMP':
+    elif parameter == 'temp' or parameter == 'TEMP':
 
-        v_min, v_max = np.min(DUSTTEMP), np.max(DUSTTEMP)
+        T = TEMP.value
 
-        POSDUSTTEMP = np.hstack((POS, DUSTTEMP.reshape(DUSTTEMP.size, 1)))
+        v_min, v_max = np.min(T), np.max(T)
 
-        POSDUSTTEMPX = POSDUSTTEMP[np.argsort(POSDUSTTEMP[:, 3])]
+        POSTEMP = np.hstack((POS, T.reshape(T.size, 1)))
+
+        POSTEMPX = POSTEMP[np.argsort(POSTEMP[:, 3])]
 
         ax1_decision = raw_input("Choose Axis (X=0, Y=1, Z=2) : ")
         ax2_decision = raw_input("Choose Axis (X=0, Y=1, Z=2) : ")
@@ -364,11 +372,11 @@ while filecount > 0:
         ax1 = np.int(ax1_decision)
         ax2 = np.int(ax2_decision)
 
-        plt.figure(figsize=(10, 8))
+        fig = plt.figure(figsize=(10, 8))
 
         if v_log == 1:
 
-            plt.scatter(POSDUSTTEMPX[:, ax1], POSDUSTTEMPX[:, ax2], c=np.log10(POSDUSTTEMPX[:, 3]),
+            plt.scatter(POSTEMPX[:, ax1], POSTEMPX[:, ax2], c=np.log10(POSTEMPX[:, 3]),
                         vmin=np.log10(v_min), vmax=np.log10(v_max), marker='.', s=1, cmap='jet')
 
             cbar = plt.colorbar()
@@ -381,7 +389,7 @@ while filecount > 0:
 
         else:
 
-            plt.scatter(POSDUSTTEMPX[:, ax1], POSDUSTTEMPX[:, ax2], c=POSDUSTTEMPX[:, 3],
+            plt.scatter(POSTEMPX[:, ax1], POSTEMPX[:, ax2], c=POSTEMPX[:, 3],
                         vmin=v_min, vmax=v_max, marker='.', s=1, cmap='jet')
 
             cbar = plt.colorbar()
@@ -424,7 +432,9 @@ while filecount > 0:
 
         plt.ylabel(r"$%s\ [pc]$" % lab2)
 
-        plt.show()
+        TEMP_Save = Savelocation + "Temperature Plot.png"
+
+        fig.savefig(TEMP_Save, dpi=300, format='png', bbox_inches='tight')
 
         xy_decision = raw_input("Change scale? : ")
 
@@ -455,7 +465,7 @@ while filecount > 0:
 
         X = raw_input("Choose which chem species to plot (See above for options) : ")
 
-        plt.figure(figsize=(10, 8))
+        fig = plt.figure(figsize=(10, 8))
 
         if v_log == 1:
 
@@ -479,7 +489,9 @@ while filecount > 0:
 
         plt.ylabel(r'$Temperature\ [K]$')
 
-        plt.show()
+        CHEM_Save = Savelocation + "Density Temp Plot with Chemistry.png"
+
+        fig.savefig(CHEM_Save, dpi=300, format='png', bbox_inches='tight')
 
         xy_decision = raw_input("Change plot? : ")
 
@@ -495,7 +507,7 @@ while filecount > 0:
 
     elif parameter == 'mass' or parameter == 'MASS':
 
-        plt.figure(figsize=(10, 8))
+        fig = plt.figure(figsize=(10, 8))
 
         if v_log == 1:
 
@@ -517,7 +529,9 @@ while filecount > 0:
 
         plt.ylabel(r'$Temperature\ [K]$')
 
-        plt.show()
+        MASS_Save = Savelocation + "Density Temp Plot with Mass.png"
+
+        fig.savefig(MASS_Save, dpi=300, format='png', bbox_inches='tight')
 
         xy_decision = raw_input("Change plot? : ")
 
@@ -534,7 +548,7 @@ while filecount > 0:
 
     elif parameter == 'pdf' or parameter == 'PDF':
 
-        plt.figure(figsize=(10, 8))
+        fig = plt.figure(figsize=(10, 8))
 
         n_pdf = n.value[n.value >= 1]
 
@@ -580,7 +594,76 @@ while filecount > 0:
 
         plt.ylabel(r'$Mass-weighted\ PDF$')
 
-        plt.show()
+        PDF_Save = Savelocation + "Mass-weighted PDF.png"
+
+        fig.savefig(PDF_Save, dpi=300, format='png', bbox_inches='tight')
+
+        xy_decision = raw_input("Change plot? : ")
+
+        if xy_decision == 'y':
+
+            v_log = 0
+
+            continue
+
+        else:
+
+            break
+
+
+    elif parameter == 'cumulative' or parameter == 'Cumulative':
+
+        fig = plt.figure(figsize=(10, 8))
+
+        n_pdf = n.value[n.value >= 1]
+
+        nmin = np.min(n_pdf)
+
+        nmax = np.max(n_pdf)
+
+        nbins = 150
+
+        dlogn = np.log10(nmax - nmin) / nbins
+
+        nbinmin = nmin
+
+        Massbin = np.zeros(nbins)
+
+#        nbinmax = np.zeros(nbins)
+
+        nbincent = np.zeros(nbins)
+
+        for i in xrange(1, nbins + 1):
+
+            nbinmax = 10 ** (i * dlogn)
+
+            nbincent[i-1] = nbinmin + (nbinmax-nbinmin)/2
+
+            ParticleID = np.argwhere((n_pdf >= nbinmin) & (n_pdf <= nbinmax))
+
+            MassID = MASS[ParticleID]
+
+            Massbin[i-1] = np.sum(MassID)
+
+            nbinmin = nbinmax
+
+#        print(nbincent[-1])
+
+#        print(nbinmax)
+
+        MassPDF = Massbin/np.sum(Massbin)
+
+        CDF = np.cumsum(MassPDF)
+
+        plt.loglog(nbincent, CDF)
+
+        plt.xlabel(r'$n\ [cm^{-3}]$')
+
+        plt.ylabel(r'$Cumulative\ PDF$')
+
+        CDF_Save = Savelocation + "Cumulative.png"
+
+        fig.savefig(CDF_Save, dpi=300, format='png', bbox_inches='tight')
 
         xy_decision = raw_input("Change plot? : ")
 

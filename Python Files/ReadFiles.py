@@ -7,6 +7,7 @@ Created on Wed Oct 04 10:57:34 2017
 
 from __future__ import division
 import sys
+import os
 import numpy as np
 
 
@@ -18,6 +19,11 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
 matplotlib.rcParams.update({'font.size': 15})
+
+def ensure_dir(file_path):
+    directory = os.path.dirname(file_path)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
 ### BEGIN ###
 
@@ -51,7 +57,7 @@ while T < 2:
 
         File = File[:-1]
 
-    SaveLocation = InputDir+Input
+    SaveLocation = InputDir+Input+"Plot_Files/"
 
     Filelocation = SaveLocation+File+".pkl"
 
@@ -70,7 +76,19 @@ while T < 2:
 
         if T == 1:
 
-            SaveLocation = InputDir + "Multiple_File_Plot/"
+            File_Name = raw_input("Input Filename : ")
+
+            if File_Name[0] == '/':
+
+                File_Name = File_Name[1:]
+
+            if File_Name[-1] == '/':
+
+                File_Name = File_Name[:-1]
+
+            SaveLocation = InputDir + "Multiple_File_Plot/" + File_Name + "/"
+
+            ensure_dir(SaveLocation)
 
             T = 4
 
@@ -325,10 +343,13 @@ for i in xrange(Size):
 
     ax5.semilogy(Time, TOTMASS_n[2, :], marker='None', linestyle=linestyle[i], color=linecolor[2], label=labeln3[i])
 
-    ax5.semilogy(Time, TOTMASS_n[3, :], marker='None', linestyle=linestyle[i], color=linecolor[3], label=labeln1[i])
+    ax5.semilogy(Time, TOTMASS_n[3, :], marker='None', linestyle=linestyle[i], color=linecolor[3], label=labeln4[i])
 
     """
-    # Shrink current axis by 20%
+    # Shrink current axis by 20%def ensure_dir(file_path):
+    directory = os.path.dirname(file_path)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
     box = ax.get_position()
     ax.set_position([box.x0, box.y0, box.width, box.height])
     
@@ -368,7 +389,7 @@ for i in xrange(Size):
     Temperature_Save = SaveLocation + "Mass evolution of Gas with Temperature.png"
 
 
-    ax7.semilogy(Time, NSink, marker='None', linestyle='-')
+    ax7.semilogy(Time, NSink, marker='None', linestyle=linestyle[i], color=linecolor[0])
 
     """
     # Shrink current axis by 20%

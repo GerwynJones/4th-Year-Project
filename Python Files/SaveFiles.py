@@ -17,10 +17,15 @@ from Arepo_Read_Master import *
 
 ### BEGIN ###
 
+def Ensure_Dir(file_path):
+    directory = os.path.dirname(file_path)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
 v_log = 1
 
 
-def keyFunc(afilename):
+def KeyFunc(afilename):
     nondigits = re.compile("\D")
     return int(nondigits.sub("", afilename))
 
@@ -43,7 +48,7 @@ for i in os.listdir(inputdir):
     if os.path.isfile(os.path.join(inputdir, i)) and inputfile in i:
         files.append(i)
 
-for x, name in enumerate(sorted(files, key=keyFunc)):
+for x, name in enumerate(sorted(files, key=KeyFunc)):
 
     files_sorted.append(name)
 
@@ -349,7 +354,9 @@ if File[-1] == '_':
 
     File = File[:-1]
 
-Filename = "../" + File + ".pkl"
+Ensure_Dir("../Plot_Files/")
+
+Filename = "../Plot_Files/" + File + ".pkl"
 
 
 data = [num_species, Time_Code, Time, Density_max, Temperature_min, Peak_Abundances, MassFraction, TOTMASS_n, TOTMASS_T, A, B, C, D, NSink]
